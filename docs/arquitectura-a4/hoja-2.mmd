@@ -1,0 +1,55 @@
+%% Hoja 2 de 2 - A4 horizontal
+flowchart LR
+    API@{ img: "https://cdn.simpleicons.org/fastapi", label: "Paso 04 - Servidor API<br/>Recibe la petición<br/>FastAPI + Uvicorn :8010", pos: "b", w: 65, h: 65, constraint: "on" }
+    LIMITES@{ img: "https://cdn.simpleicons.org/python", label: "Paso 05 - Límites<br/>Evita el exceso de uso<br/>Python", pos: "b", w: 65, h: 65, constraint: "on" }
+    FORMATO@{ img: "https://cdn.simpleicons.org/json", label: "Paso 06 - Formato JSON<br/>Lee el cuerpo enviado<br/>json de Python", pos: "b", w: 65, h: 65, constraint: "on" }
+    TEXTO@{ img: "https://cdn.simpleicons.org/pydantic", label: "Paso 07 - Texto<br/>Limpia y revisa el mensaje<br/>Pydantic + unicodedata", pos: "b", w: 65, h: 65, constraint: "on" }
+    VALIDA@{ img: "https://cdn.simpleicons.org/python", label: "Paso 08 - Decisión<br/>Separa lo válido del error<br/>Python", pos: "b", w: 65, h: 65, constraint: "on" }
+    CONTEXTO@{ img: "https://cdn.simpleicons.org/pydantic", label: "Paso 09 - Contexto seguro<br/>Crea ID, fecha y usuario anónimo<br/>Pydantic + UUID + datetime", pos: "b", w: 65, h: 65, constraint: "on" }
+    AZURE@{ img: "https://api.iconify.design/logos/microsoft-azure.svg", label: "Paso 10 - Modelo en Azure<br/>Genera una respuesta técnica<br/>Azure OpenAI + Responses API", pos: "b", w: 65, h: 65, constraint: "on" }
+    CONFIRMA@{ img: "https://cdn.simpleicons.org/fastapi", label: "Paso 11A - Respuesta útil<br/>Devuelve la ayuda generada<br/>FastAPI + Pydantic", pos: "b", w: 65, h: 65, constraint: "on" }
+    ERROR@{ img: "https://cdn.simpleicons.org/fastapi", label: "Paso 11B - Error claro<br/>Explica el fallo sin datos privados<br/>FastAPI + Pydantic", pos: "b", w: 65, h: 65, constraint: "on" }
+    REGISTRO@{ img: "https://cdn.simpleicons.org/json", label: "Seguimiento E1 - Registro<br/>Guarda el resultado, no el mensaje<br/>logging + JSON", pos: "b", w: 65, h: 65, constraint: "on" }
+    CONFIG@{ img: "https://cdn.simpleicons.org/dotenv", label: "Configuración desde hoja 1<br/>.env + Pydantic Settings", pos: "b", w: 55, h: 55, constraint: "on" }
+    REGRESA@{ img: "https://api.iconify.design/mdi/arrow-left-bold-circle.svg", label: "Vuelve a la hoja 1<br/>Paso 03 - Cliente HTTP", pos: "b", w: 65, h: 65, constraint: "on" }
+
+    subgraph PROCESO["Parte C - Revisión en el backend"]
+        API
+        LIMITES
+        FORMATO
+        TEXTO
+        VALIDA
+        CONTEXTO
+    end
+
+    subgraph MODELO["Parte D - Modelo en Azure"]
+        AZURE
+    end
+
+    subgraph RESULTADO["Parte E - Resultado"]
+        direction TB
+        CONFIRMA
+        ERROR
+    end
+
+    subgraph SEGUIMIENTO["Parte F - Seguimiento técnico"]
+        direction TB
+        CONFIG
+        REGISTRO
+    end
+
+    API --> LIMITES
+    LIMITES --> FORMATO
+    FORMATO --> TEXTO
+    TEXTO --> VALIDA
+    VALIDA -->|"Sí"| CONTEXTO
+    VALIDA -->|"No"| ERROR
+    CONTEXTO --> AZURE
+    AZURE --> CONFIRMA
+    AZURE -->|"Fallo"| ERROR
+    CONFIRMA -->|"Respuesta HTTP"| REGRESA
+    ERROR -->|"Respuesta HTTP"| REGRESA
+    API -.-> REGISTRO
+    AZURE -.-> REGISTRO
+    CONFIG -.-> API
+    CONFIG -.-> AZURE

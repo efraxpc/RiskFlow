@@ -1,0 +1,80 @@
+%% Los iconos usan URLs SVG públicas para funcionar también en Mermaid.ai.
+flowchart LR
+    PERSONA@{ img: "https://api.iconify.design/mdi/account.svg", label: "Paso 01 - Persona<br/>Escribe una consulta<br/>Navegador web", pos: "b", w: 60, h: 60, constraint: "on" }
+    SCRIPT@{ img: "https://cdn.simpleicons.org/gnubash", label: "Inicio A1 - Control<br/>Inicia, reinicia y detiene<br/>Bash + uv", pos: "b", w: 60, h: 60, constraint: "on" }
+    WEB@{ img: "https://cdn.simpleicons.org/streamlit", label: "Paso 02 - Pantalla web<br/>Muestra el chat<br/>Streamlit :8510", pos: "b", w: 60, h: 60, constraint: "on" }
+    HISTORIAL@{ img: "https://cdn.simpleicons.org/streamlit", label: "Paso 02A - Historial<br/>Recuerda el chat abierto<br/>st.session_state", pos: "b", w: 60, h: 60, constraint: "on" }
+    CLIENTE@{ img: "https://cdn.simpleicons.org/python", label: "Paso 03 - Cliente HTTP<br/>Manda el mensaje a la API<br/>HTTPX", pos: "b", w: 60, h: 60, constraint: "on" }
+    API@{ img: "https://cdn.simpleicons.org/fastapi", label: "Paso 04 - Servidor API<br/>Recibe la petición<br/>FastAPI + Uvicorn :8010", pos: "b", w: 60, h: 60, constraint: "on" }
+    LIMITES@{ img: "https://cdn.simpleicons.org/python", label: "Paso 05 - Límites<br/>Evita el exceso de uso<br/>Python", pos: "b", w: 60, h: 60, constraint: "on" }
+    FORMATO@{ img: "https://cdn.simpleicons.org/json", label: "Paso 06 - Formato JSON<br/>Lee el cuerpo enviado<br/>json de Python", pos: "b", w: 60, h: 60, constraint: "on" }
+    TEXTO@{ img: "https://cdn.simpleicons.org/pydantic", label: "Paso 07 - Texto<br/>Limpia y revisa el mensaje<br/>Pydantic + unicodedata", pos: "b", w: 60, h: 60, constraint: "on" }
+    VALIDA@{ img: "https://cdn.simpleicons.org/python", label: "Paso 08 - Decisión<br/>Separa lo válido del error<br/>Python", pos: "b", w: 60, h: 60, constraint: "on" }
+    CONTEXTO@{ img: "https://cdn.simpleicons.org/pydantic", label: "Paso 09 - Contexto seguro<br/>Crea ID, fecha y usuario anónimo<br/>Pydantic + UUID + datetime", pos: "b", w: 60, h: 60, constraint: "on" }
+    AZURE@{ img: "https://api.iconify.design/logos/microsoft-azure.svg", label: "Paso 10 - Modelo en Azure<br/>Genera una respuesta técnica<br/>Azure OpenAI + Responses API", pos: "b", w: 60, h: 60, constraint: "on" }
+    CONFIRMA@{ img: "https://cdn.simpleicons.org/fastapi", label: "Paso 11A - Respuesta útil<br/>Devuelve la ayuda generada<br/>FastAPI + Pydantic", pos: "b", w: 60, h: 60, constraint: "on" }
+    ERROR@{ img: "https://cdn.simpleicons.org/fastapi", label: "Paso 11B - Error claro<br/>Explica el fallo sin datos privados<br/>FastAPI + Pydantic", pos: "b", w: 60, h: 60, constraint: "on" }
+    REGISTRO@{ img: "https://cdn.simpleicons.org/json", label: "Seguimiento E1 - Registro<br/>Guarda el resultado, no el mensaje<br/>logging + JSON", pos: "b", w: 60, h: 60, constraint: "on" }
+    CONFIG@{ img: "https://cdn.simpleicons.org/dotenv", label: "Inicio A2 - Configuración<br/>Carga puertos y límites<br/>.env + Pydantic Settings", pos: "b", w: 60, h: 60, constraint: "on" }
+
+    subgraph INICIO["Parte A - Inicio del sistema"]
+        SCRIPT
+        CONFIG
+    end
+
+    subgraph INTERFAZ["Parte B - Entrada e interfaz"]
+        PERSONA
+        WEB
+        HISTORIAL
+        CLIENTE
+    end
+
+    subgraph PROCESO["Parte C - Revisión en el backend"]
+        API
+        LIMITES
+        FORMATO
+        TEXTO
+        VALIDA
+        CONTEXTO
+    end
+
+    subgraph MODELO["Parte D - Modelo en Azure"]
+        AZURE
+    end
+
+    subgraph RESULTADO["Parte E - Resultado"]
+        CONFIRMA
+        ERROR
+    end
+
+    subgraph SEGUIMIENTO["Parte F - Seguimiento técnico"]
+        REGISTRO
+    end
+
+    SCRIPT --> WEB
+    SCRIPT --> API
+
+    PERSONA -->|"Escribe un mensaje"| WEB
+    WEB --> CLIENTE
+    CLIENTE -->|"Envía solo el mensaje nuevo por HTTP"| API
+    WEB -.-> HISTORIAL
+
+    API --> LIMITES
+    LIMITES --> FORMATO
+    FORMATO --> TEXTO
+    TEXTO --> VALIDA
+    VALIDA -->|"Sí"| CONTEXTO
+    VALIDA -->|"No"| ERROR
+    CONTEXTO --> AZURE
+    AZURE --> CONFIRMA
+    AZURE -->|"Fallo"| ERROR
+
+    CONFIRMA -->|"Respuesta HTTP"| CLIENTE
+    ERROR -->|"Respuesta HTTP"| CLIENTE
+    CLIENTE --> WEB
+    API -.-> REGISTRO
+    AZURE -.-> REGISTRO
+
+    CONFIG -.-> WEB
+    CONFIG -.-> API
+    CONFIG -.-> AZURE

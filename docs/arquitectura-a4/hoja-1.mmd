@@ -1,0 +1,32 @@
+%% Hoja 1 de 2 - A4 horizontal
+flowchart LR
+    SCRIPT@{ img: "https://cdn.simpleicons.org/gnubash", label: "Inicio A1 - Control<br/>Inicia, reinicia y detiene<br/>Bash + uv", pos: "b", w: 70, h: 70, constraint: "on" }
+    CONFIG@{ img: "https://cdn.simpleicons.org/dotenv", label: "Inicio A2 - Configuración<br/>Carga puertos y límites<br/>.env + Pydantic Settings", pos: "b", w: 70, h: 70, constraint: "on" }
+    PERSONA@{ img: "https://api.iconify.design/mdi/account.svg", label: "Paso 01 - Persona<br/>Escribe una consulta<br/>Navegador web", pos: "b", w: 70, h: 70, constraint: "on" }
+    WEB@{ img: "https://cdn.simpleicons.org/streamlit", label: "Paso 02 - Pantalla web<br/>Muestra el chat<br/>Streamlit :8510", pos: "b", w: 70, h: 70, constraint: "on" }
+    HISTORIAL@{ img: "https://cdn.simpleicons.org/streamlit", label: "Paso 02A - Historial<br/>Recuerda el chat abierto<br/>st.session_state", pos: "b", w: 70, h: 70, constraint: "on" }
+    CLIENTE@{ img: "https://cdn.simpleicons.org/python", label: "Paso 03 - Cliente HTTP<br/>Manda el mensaje a la API<br/>HTTPX", pos: "b", w: 70, h: 70, constraint: "on" }
+    CONTINUA@{ img: "https://api.iconify.design/mdi/arrow-right-bold-circle.svg", label: "Continúa en la hoja 2<br/>Paso 04 - Servidor API", pos: "b", w: 70, h: 70, constraint: "on" }
+
+    subgraph INICIO["Parte A - Inicio del sistema"]
+        direction TB
+        SCRIPT
+        CONFIG
+    end
+
+    subgraph INTERFAZ["Parte B - Entrada e interfaz"]
+        direction LR
+        PERSONA
+        WEB
+        HISTORIAL
+        CLIENTE
+    end
+
+    SCRIPT --> WEB
+    SCRIPT -.-> CONTINUA
+    CONFIG -.-> WEB
+    CONFIG -.-> CONTINUA
+    PERSONA -->|"Escribe un mensaje"| WEB
+    WEB -.-> HISTORIAL
+    WEB --> CLIENTE
+    CLIENTE -->|"Envía el mensaje por HTTP"| CONTINUA
