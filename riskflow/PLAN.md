@@ -14,11 +14,13 @@ Last updated: 2026-09-16
 - [x] Create a minimal FastAPI backend and a React/Vite/TypeScript frontend.
 - [x] Document installation, development, and verification commands.
 - [x] Add one basic backend test and one basic frontend test.
+- [x] Add and verify a combined `start`, `restart`, and `stop` project runner.
 
 Acceptance evidence:
 
 - FastAPI started on a temporary local port and `GET /health` returned HTTP 200.
 - Vite started on a temporary local port and served the application HTML.
+- The project runner completed a real `start -> restart -> stop` lifecycle without orphan processes.
 - Backend: 34 tests passed; Ruff lint/format and strict mypy passed.
 - Frontend: 1 component test passed; ESLint, TypeScript, production build, and npm audit passed.
 - A nested Git repository was intentionally not created because the parent directory is already versioned.

@@ -26,6 +26,29 @@ The future boundaries and transition ownership are documented in [`docs/architec
 
 An OpenAI key is **not required**. `OPENAI_API_KEY` is reserved for phase 4; the future application will default to a deterministic local explanation whenever it is absent.
 
+## Start both applications
+
+The project runner installs the locked dependencies and keeps FastAPI and Vite together in the current terminal:
+
+```bash
+cd riskflow
+./run.sh start
+```
+
+`./run.sh` is equivalent to `./run.sh start`. Press `Ctrl+C` to stop both services, or manage the process from another terminal:
+
+```bash
+./run.sh restart
+./run.sh stop
+./run.sh --help
+```
+
+The defaults are <http://127.0.0.1:5173> for the UI and <http://127.0.0.1:8000> for the API. Ports can be changed without editing files:
+
+```bash
+RISKFLOW_BACKEND_PORT=18000 RISKFLOW_FRONTEND_PORT=15173 ./run.sh start
+```
+
 ## Backend
 
 ```bash
@@ -84,6 +107,7 @@ Copy `.env.example` to `.env` only when configuration is needed. Never commit `.
 
 ```text
 riskflow/
+  run.sh         Combined start, restart, and stop command
   backend/       FastAPI shell and independent domain package
   frontend/      React/Vite shell
   docs/          architecture and demo notes
