@@ -1,0 +1,15 @@
+.git
+.gitignore
+.venv
+.env
+.pytest_cache
+.ruff_cache
+.supportflow
+__pycache__
+*.py[cod]
+*.tfstate
+*.tfstate.*
+docs
+infra
+riskflow
+tests

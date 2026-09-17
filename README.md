@@ -130,6 +130,12 @@ Verificación realizada el 2026-09-14: **83 pruebas pasaron**, Ruff aprobó el c
 
 El backend emite registros JSON con identificador, resultado, estado HTTP y duración. Los comandos desactivan el registro de acceso de Uvicorn para mantener los registros en ese formato; no se registran mensajes ni credenciales.
 
+## Infraestructura en Azure
+
+La infraestructura reproducible está en [`infra/`](infra/README.md). Terraform prepara Azure Container Apps, ACR, red, registros, identidades administradas, RBAC y, opcionalmente, administra la cuenta de Azure AI y su despliegue de modelo. El flujo se divide en un primer `apply`, la publicación de las dos imágenes y un segundo `apply` que habilita FastAPI y Streamlit.
+
+La configuración predeterminada referencia el recurso Azure AI existente sin adoptarlo en el estado. Consulta la guía antes de importar ese recurso, ya que no debe pertenecer simultáneamente a dos estados Terraform.
+
 ## Documentación y próximos hitos
 
 - [Contrato de API vigente](docs/contrato-api.md).

@@ -1,0 +1,30 @@
+# Obtain this value with: az account show --query id -o tsv
+subscription_id = "00000000-0000-0000-0000-000000000000"
+
+location            = "brazilsouth"
+environment         = "dev"
+resource_group_name = "rg-supportflow-dev"
+
+# Null creates a stable random suffix on first apply. Set a globally unique
+# alphanumeric name here if organizational naming policy requires one.
+container_registry_name = null
+
+# First apply with false. After pushing both images, set true and apply again.
+deploy_container_apps = false
+image_tag             = "dev-001"
+
+# Safe default: reference the currently deployed Azure AI account without
+# adopting it into this state. See README.md before changing this to true.
+manage_ai_resources   = false
+ai_resource_group_name = "rg-rag-manual-generico-dev"
+ai_account_name        = "rag-manual-foundry-resource"
+ai_deployment_name     = "rag-manual-generico-dev-general"
+ai_location            = "brazilsouth"
+ai_model_name          = "gpt-5-mini"
+ai_model_version       = "2025-08-07"
+ai_deployment_sku      = "GlobalStandard"
+ai_deployment_capacity = 10
+
+tags = {
+  Owner = "supportflow-team"
+}
